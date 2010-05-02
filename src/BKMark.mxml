@@ -21,7 +21,6 @@
 			
 			protected function combobox1_changeHandler(event:IndexChangeEvent):void
 			{
-				trace( list.selectedIndex );
 			}
 
 
@@ -63,32 +62,17 @@
 
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<s:ArrayCollection id="sections">
+			<fx:Array>
+				<fx:Object label="BOOK MARKS"/>
+				<fx:Object label="SUBMIT"/>
+				<fx:Object label="TAGS"/>
+				<fx:Object label="SETTINGS"/>
+			</fx:Array>
+		</s:ArrayCollection>
 	</fx:Declarations>
 	
-	<s:HGroup gap="50"  horizontalAlign="center">
-		<s:ComboBox id="list" width="150" change="combobox1_changeHandler(event)" >
-			<s:ArrayCollection>
-				<fx:Array>
-					<fx:Object label="Javascript"/>
-					<fx:Object label="CSS"/>
-					<fx:Object label="Ruby"/>
-					<fx:Object label="Flash"/>
-					<fx:Object label="Best Practices"/>
-					<fx:Object label="Objective-C"/>
-					<fx:Object label="HTML5"/>
-					<fx:Object label="misc"/>
-				</fx:Array>
-			</s:ArrayCollection>
-		</s:ComboBox>
-		<s:Label text="Paperless Labs" fontSize="14" />
-	</s:HGroup>
-	<s:VGroup width="90%" horizontalAlign="center" horizontalCenter="0">
-		<s:TextInput width="100%" text="Link" height="35"/>
-		<s:TextArea width="100%" text="Description" height="100"/>
-		<s:HGroup>
-			<s:Button label="Send"/>
-		</s:HGroup>
-	</s:VGroup>
+	<s:TabBar dataProvider="{sections}"/>
 	<s:List dataProvider="{listData}" 
 			width="100%" 
 			height="100%"
