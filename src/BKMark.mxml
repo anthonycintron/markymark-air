@@ -16,6 +16,9 @@
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
 			
+			import org.iotashan.oauth.IOAuthSignatureMethod;
+			import org.iotashan.oauth.OAuthToken;
+			
 			import spark.events.IndexChangeEvent;
 		
 			[Bindable]
@@ -28,12 +31,27 @@
 
 			protected function init(event:FlexEvent):void
 			{
+				html.addEventListener(Event.LOCATION_CHANGE, locationChanged);
+				currentState = 'authenticate';
+				/*
 				var request:URLRequest = new URLRequest("http://localhost:3000/auth/github");
 				var loader:URLLoader = new URLLoader(request);
 				loader.addEventListener(Event.COMPLETE, service_resultHandler);
 				loader.addEventListener(IOErrorEvent.IO_ERROR, service_faultHandler);
+				*/
+
 			}
 			
+			private function locationChanged(event:Event):void
+			{
+				trace("Location: " + event.currentTarget.location );
+				switch( event.currentTarget.location )
+				{
+					case 'http://localhost:3000/bookmarks':
+						currentState = 'bookmarks';
+						break;
+				}
+			}
 
 			protected function service_resultHandler(event:Event):void
 			{
@@ -63,6 +81,12 @@
 	</fx:Declarations>
 	
 	<s:TabBar dataProvider="{sections}"/>
+	
+	<s:Group id="htmlContainer" includeIn="authenticate" >
+		<mx:HTML id="html" width="100%" height="100%" location="http://localhost:3000/auth/github"/>
+	</s:Group>
+	
+	<!--
 	<s:List dataProvider="{listData}" 
 			width="100%" 
 			height="100%"
@@ -72,16 +96,9 @@
 			<s:VerticalLayout />
 		</s:layout>
 	</s:List>
-	
+		-->
 	<s:states>
-		<s:State name="javascript"/>
-		<s:State name="css"/>
-		<s:State name="ruby"/>
-		<s:State name="flash"/>
-		<s:State name="bestpractices"/>
-		<s:State name="objectivec"/>
-		<s:State name="html5"/>
-		<s:State name="misc"/>
+		<s:State name="authenticate"/>
+		<s:State name="bookmarks"/>
 	</s:states>
-	
 </s:WindowedApplication>
