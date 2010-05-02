@@ -1,3 +1,4 @@
 bin-debug/
 BKMark.air
 .settings
+.DS_Store
