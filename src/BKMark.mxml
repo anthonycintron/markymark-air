@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx"
+					   width="300"
+					   height="500"
+					   backgroundColor="0x333333" 
+					   title="Paperless Labs" 
+					   creationComplete="init(event)">
+	<s:layout>
+		<s:VerticalLayout horizontalAlign="center" />
+	</s:layout>
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			import spark.events.IndexChangeEvent;
+		
+			[Bindable]
+			private var listData:ArrayCollection = new ArrayCollection();
+			
+			protected function combobox1_changeHandler(event:IndexChangeEvent):void
+			{
+				trace( list.selectedIndex );
+			}
+
+
+			protected function init(event:FlexEvent):void
+			{
+				var item1:Object = new Object();
+				item1.category = 'flash';
+				item1.label = 'New Android Flash Player 10.1 Sign-up';
+				item1.link = 'https://www.adobe.com/cfusion/entitlement/index.cfm?e=labs_flashplayer10_android_signup';
+				listData.addItem(item1);
+
+				var item2:Object = new Object();
+				item2.category = 'flash';
+				item2.label = 'Great ActionScript 3.0 library which connects to couchdb';
+				item2.link = 'http://custardbelly.com/blog/?p=147';
+				listData.addItem(item2);
+				
+				//connectToSQLiteDB();
+			}
+			
+			private function connectToSQLiteDB():void
+			{
+				var dbFile:File = File.applicationStorageDirectory.resolvePath('BKMark.db');
+				
+				var sqlConn:SQLConnection = new SQLConnection();
+				var sqlStatement:SQLStatement = new SQLStatement();
+				
+				sqlConn.open(dbFile);
+				
+				sqlStatement.sqlConnection = sqlConn;
+				sqlStatement.text = 'SELECT * FROM bookmarks';
+				sqlStatement.executing;
+				
+				var resultArray:Array =  sqlStatement.getResult().data;
+			}
+
+		]]>
+	</fx:Script>
+
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<s:HGroup gap="50"  horizontalAlign="center">
+		<s:ComboBox id="list" width="150" change="combobox1_changeHandler(event)" >
+			<s:ArrayCollection>
+				<fx:Array>
+					<fx:Object label="Javascript"/>
+					<fx:Object label="CSS"/>
+					<fx:Object label="Ruby"/>
+					<fx:Object label="Flash"/>
+					<fx:Object label="Best Practices"/>
+					<fx:Object label="Objective-C"/>
+					<fx:Object label="HTML5"/>
+					<fx:Object label="misc"/>
+				</fx:Array>
+			</s:ArrayCollection>
+		</s:ComboBox>
+		<s:Label text="Paperless Labs" fontSize="14" />
+	</s:HGroup>
+	<s:VGroup width="90%" horizontalAlign="center" horizontalCenter="0">
+		<s:TextInput width="100%" text="Link" height="35"/>
+		<s:TextArea width="100%" text="Description" height="100"/>
+		<s:HGroup>
+			<s:Button label="Send"/>
+		</s:HGroup>
+	</s:VGroup>
+	<s:List dataProvider="{listData}" 
+			width="100%" 
+			height="100%"
+			labelField="label"
+			itemRenderer="com.paperlesspost.bkmark.itemrenderers.ListItemRenderer">
+		<s:layout>
+			<s:VerticalLayout />
+		</s:layout>
+	</s:List>
+	
+	<s:states>
+		<s:State name="javascript"/>
+		<s:State name="css"/>
+		<s:State name="ruby"/>
+		<s:State name="flash"/>
+		<s:State name="bestpractices"/>
+		<s:State name="objectivec"/>
+		<s:State name="html5"/>
+		<s:State name="misc"/>
+	</s:states>
+	
+</s:WindowedApplication>
